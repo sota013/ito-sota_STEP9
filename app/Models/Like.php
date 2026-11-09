@@ -20,4 +20,20 @@ class Like extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public static function toggleLike($user_id, $product_id)
+    {
+        $like = self::where('user_id', $user_id)
+            ->where('product_id', $product_id)
+            ->first();
+    
+        if ($like) {
+            $like->delete();
+        } else {
+            self::create([
+                'user_id' => $user_id,
+                'product_id' => $product_id,
+            ]);
+        }
+    }
 }

@@ -22,4 +22,20 @@ class Sale extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public static function registerPurchase($user_id, $product_id, $quantity)
+    {
+        return self::create([
+            'user_id' => $user_id,
+            'product_id' => $product_id,
+            'quantity' => $quantity,
+        ]);
+    }
+
+    public static function getSalesByUser($user_id)
+    {
+        return self::with('product')
+            ->where('user_id', $user_id)
+            ->get();
+    }
 }

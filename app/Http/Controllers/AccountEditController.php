@@ -30,7 +30,7 @@ class AccountEditController extends Controller
             ],
         ]);
 
-        $user->update($validated);
+        $user->updateAccount($validated);
 
         return redirect()->route('mypage')
             ->with('success', 'アカウント情報を更新しました。');

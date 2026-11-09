@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 
 #[Fillable(['name', 'name_kanji', 'name_kana', 'email', 'password', 'company_id'])]
 #[Hidden(['password', 'remember_token'])]
@@ -52,4 +53,15 @@ class User extends Authenticatable
         return $this->hasMany(Like::class);
     }
 
+    public function updateAccount($account_data)
+    {
+        return $this->update($account_data);
+    }
+
+    public static function registerUser($user_data)
+    {
+        $user_data['password'] = Hash::make($user_data['password']);
+    
+        return self::create($user_data);
+    }
 }

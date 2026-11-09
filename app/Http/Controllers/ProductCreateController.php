@@ -28,7 +28,7 @@ class ProductCreateController extends Controller
             $imagePath = $request->file('img_path')->store('products', 'public');
         }
 
-        Product::create([
+        Product::registerProduct([
             'user_id' => auth()->id(),
             'company_id' => auth()->user()->company_id,
             'product_name' => $validated['product_name'],

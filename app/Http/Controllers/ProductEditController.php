@@ -9,16 +9,14 @@ class ProductEditController extends Controller
 {
     public function edit($id)
     {
-        $product = Product::where('user_id', auth()->id())
-            ->findOrFail($id);
+        $product = Product::getProductByUser($id, auth()->id());
 
         return view('products.edit', compact('product'));
     }
 
     public function update(Request $request, $id)
     {
-        $product = Product::where('user_id', auth()->id())
-            ->findOrFail($id);
+        $product = Product::getProductByUser($id, auth()->id());
 
         $validated = $request->validate([
             'product_name' => ['required', 'string', 'max:255'],
@@ -42,7 +40,7 @@ class ProductEditController extends Controller
             unset($validated['img_path']);
         }
 
-        $product->update($validated);
+        $product->updateProduct($validated);
 
         return redirect()->route('mypage')
             ->with('success', '商品を更新しました。');

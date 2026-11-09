@@ -8,10 +8,11 @@ class ProductDetailController extends Controller
 {
     public function show($id)
     {
-        $product = Product::findOrFail($id);
-        $isLiked = auth()->check()
-            && $product->likes()->where('user_id', auth()->id())->exists();
+        $product = Product::getProductById($id);
 
-            return view('products.show', compact('product', 'isLiked'));
+        $isLiked = auth()->check()
+            && $product->isLikedBy(auth()->id());
+
+        return view('products.show', compact('product', 'isLiked'));
     }
 }

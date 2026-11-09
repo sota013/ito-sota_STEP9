@@ -11,9 +11,7 @@ class PurchaseController extends Controller
 {
     public function create($id)
     {
-        $product = Product::where('id', $id)
-            ->where('stock', '>', 0)
-            ->firstOrFail();
+        $product = Product::getAvailableProductById($id);
     
         return view('products.purchase', compact('product'));
     }
@@ -25,9 +23,7 @@ class PurchaseController extends Controller
         ]);
 
         DB::transaction(function () use ($request, $id, $validated) {
-            $product = Product::where('id', $id)
-                ->lockForUpdate()
-                ->firstOrFail();
+            $product = Product::getProductForUpdate($id);
 
             if ($product->stock <= 0) {
                 throw \Illuminate\Validation\ValidationException::withMessages([
@@ -41,13 +37,13 @@ class PurchaseController extends Controller
                 ]);
             }
 
-            Sale::create([
-                'user_id' => auth()->id(),
-                'product_id' => $product->id,
-                'quantity' => $validated['quantity'],
-            ]);
+            Sale::registerPurchase(
+                auth()->id(),
+                $product->id,
+                $validated['quantity']
+            );
 
-            $product->decrement('stock', $validated['quantity']);
+            $product->decreaseStock($validated['quantity']);
         });
 
         return redirect()

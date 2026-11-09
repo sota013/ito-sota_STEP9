@@ -8,18 +8,16 @@ class ListedProductDetailController extends Controller
 {
     public function show($id)
     {
-        $product = Product::where('user_id', auth()->id())
-            ->findOrFail($id);
+        $product = Product::getProductByUser($id, auth()->id());
 
-        return view('products.listed-show', compact('product'));
+        return view('products.listed_show', compact('product'));
     }
 
     public function destroy($id)
     {
-        $product = Product::where('user_id', auth()->id())
-            ->findOrFail($id);
+        $product = Product::getProductByUser($id, auth()->id());
     
-        $product->delete();
+        $product->deleteProduct();
     
         return redirect()
             ->route('mypage')
