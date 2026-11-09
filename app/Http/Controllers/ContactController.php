@@ -13,7 +13,9 @@ class ContactController extends Controller
             'email' => ['required', 'email', 'max:255'],
             'message' => ['required', 'string', 'max:2000'],
         ]);
-    
-        return view('contact-complete', compact('validated'));
+
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'お問い合わせを送信しました。');
     }
 }

@@ -17,20 +17,23 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
             'name_kanji' => ['required', 'string', 'max:255'],
-            'name_kana' => ['required', 'string', 'max:255'],
+            'name_kana' => ['nullable', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        $user = User::create([
-            'name' => $validated['name_kanji'],
+        User::create([
+            'name' => $validated['name'],
             'name_kanji' => $validated['name_kanji'],
-            'name_kana' => $validated['name_kana'],
+            'name_kana' => $validated['name_kana'] ?? null,
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'company_id' => 1,
         ]);
-        return redirect()->route('register')->with('success', '会員登録が完了しました。');
+
+        return redirect()->route('login')
+            ->with('success', '会員登録が完了しました。');
     }
 }

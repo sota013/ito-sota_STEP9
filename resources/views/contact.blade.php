@@ -4,13 +4,19 @@
 
 @section('content')
 
-    <h1>お問い合わせ</h1>
+<div class="contact-container">
 
-    <form action="{{ route('contact.send') }}" method="POST">
+    <h1 class="page-title">お問い合わせフォーム</h1>
+
+    <form action="{{ route('contact.send') }}"
+        method="POST"
+        class="contact-form">
+
         @csrf
 
-        <div>
-            <label for="name">お名前：</label>
+        {{-- 名前 --}}
+        <div class="form-group">
+            <label for="name">名前</label>
             <input
                 type="text"
                 id="name"
@@ -19,12 +25,13 @@
                 required
             >
             @error('name')
-                <p style="color: red;">{{ $message }}</p>
+                <p class="error-message">{{ $message }}</p>
             @enderror
         </div>
 
-        <div>
-            <label for="email">メールアドレス：</label>
+        {{-- メールアドレス --}}
+        <div class="form-group">
+            <label for="email">メールアドレス</label>
             <input
                 type="email"
                 id="email"
@@ -33,12 +40,13 @@
                 required
             >
             @error('email')
-                <p style="color: red;">{{ $message }}</p>
+                <p class="error-message">{{ $message }}</p>
             @enderror
         </div>
 
-        <div>
-            <label for="message">お問い合わせ内容：</label>
+        {{-- お問い合わせ内容 --}}
+        <div class="form-group">
+            <label for="message">お問い合わせ内容</label>
             <textarea
                 id="message"
                 name="message"
@@ -46,15 +54,23 @@
                 required
             >{{ old('message') }}</textarea>
             @error('message')
-                <p style="color: red;">{{ $message }}</p>
+                <p class="error-message">{{ $message }}</p>
             @enderror
         </div>
 
-        <button type="submit">送信する</button>
+        {{-- ボタン --}}
+        <div class="contact-buttons">
+            <button type="submit" class="purchase-button">
+                送信
+            </button>
+
+            <a href="{{ route('products.index') }}" class="back-link">
+                戻る
+            </a>
+        </div>
+
     </form>
 
-    <p>
-    <a href="{{ route('products.index') }}">戻る</a>
-    </p>
+</div>
 
 @endsection
