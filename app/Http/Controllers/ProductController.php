@@ -13,7 +13,7 @@ class ProductController extends Controller
         $min_price = $request->input('min_price');
         $max_price = $request->input('max_price');
 
-        $products = (new Product())->searchProducts(
+        $products = Product::searchProducts(
             $keyword,
             $min_price,
             $max_price

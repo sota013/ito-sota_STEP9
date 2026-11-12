@@ -38,7 +38,7 @@ class Product extends Model
         return $this->hasMany(Like::class);
     }
 
-    public function searchProducts($keyword, $min_price, $max_price)
+    public static function searchProducts($keyword, $min_price, $max_price)
     {
         return self::query()
             ->when($keyword, function ($query, $keyword) {
@@ -64,7 +64,7 @@ class Product extends Model
             ->exists();
     }
 
-    public function getProductsByUser($user_id)
+    public static function getProductsByUser($user_id)
     {
         return self::where('user_id', $user_id)->get();
     }
