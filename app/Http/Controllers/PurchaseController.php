@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePurchaseRequest;
 use App\Models\Product;
 use App\Models\Sale;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PurchaseController extends Controller
@@ -12,17 +12,15 @@ class PurchaseController extends Controller
     public function create($id)
     {
         $product = Product::getAvailableProductById($id);
-    
+
         return view('products.purchase', compact('product'));
     }
-    
-    public function store(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'quantity' => ['required', 'integer', 'min:1'],
-        ]);
 
-        DB::transaction(function () use ($request, $id, $validated) {
+    public function store(StorePurchaseRequest $request, $id)
+    {
+        $validated = $request->validated();
+
+        DB::transaction(function () use ($id, $validated) {
             $product = Product::getProductForUpdate($id);
 
             if ($product->stock <= 0) {
@@ -47,7 +45,7 @@ class PurchaseController extends Controller
         });
 
         return redirect()
-            ->route('products.show', $id)
+            ->route('products.index')
             ->with('success', '購入が完了しました。');
     }
 }

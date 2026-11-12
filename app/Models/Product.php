@@ -66,7 +66,9 @@ class Product extends Model
 
     public static function getProductsByUser($user_id)
     {
-        return self::where('user_id', $user_id)->get();
+        return self::where('user_id', $user_id)
+            ->orderBy('id', 'asc')
+            ->get();
     }
 
     public static function registerProduct($product_data)

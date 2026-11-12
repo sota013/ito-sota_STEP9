@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 
 class ProductEditController extends Controller
@@ -14,22 +14,11 @@ class ProductEditController extends Controller
         return view('products.edit', compact('product'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateProductRequest $request, $id)
     {
         $product = Product::getProductByUser($id, auth()->id());
 
-        $validated = $request->validate([
-            'product_name' => ['required', 'string', 'max:255'],
-            'price' => ['required', 'integer', 'min:0'],
-            'stock' => ['required', 'integer', 'min:0'],
-            'description' => ['required', 'string'],
-            'img_path' => [
-                'nullable',
-                'image',
-                'mimes:jpg,jpeg,png,webp',
-                'max:2048',
-            ],
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('img_path')) {
             $imagePath = $request->file('img_path')

@@ -11,12 +11,15 @@
         <div class="product-detail-info">
             <p>商品名：{{ $product->product_name }}</p>
             <p>説明：{{ $product->description }}</p>
-            <div class="product-detail-image">
-                <img
+            @if ($product->img_path)
+                <div class="product-detail-image">
+                    <img
                     src="{{ asset('storage/' . $product->img_path) }}"
                     alt="{{ $product->product_name }}"
-                >
-            </div>
+                    >
+                </div>
+            @endif
+
             <p>金額：￥{{ number_format($product->price) }}</p>
             <p>会社：{{ $product->company->company_name ?? '未設定' }}</p>
             <div class="like-area">

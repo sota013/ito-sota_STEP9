@@ -36,6 +36,7 @@ class Sale extends Model
     {
         return self::with('product')
             ->where('user_id', $user_id)
+            ->orderBy('created_at', 'asc')
             ->get();
     }
 }

@@ -19,6 +19,14 @@ class ProductController extends Controller
             $max_price
         );
 
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('products.partials.list', [
+                    'products' => $products,
+                ])->render(),
+            ]);
+        }
+        
         return view('products.index', [
             'products' => $products,
             'keyword' => $keyword,

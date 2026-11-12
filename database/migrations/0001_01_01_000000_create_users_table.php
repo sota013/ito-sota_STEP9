@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('name_kanji');
-            $table->string('name_kana');
             $table->string('email')->unique();
             $table->string('password');
-            $table->foreignId('company_id')->constrained('companies');
+            $table->string('name_kana')->nullable();
             $table->timestamps();
 });
     }

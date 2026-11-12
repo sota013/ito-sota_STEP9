@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use App\Http\Requests\UpdateAccountRequest;
 
 class AccountEditController extends Controller
 {
@@ -14,21 +13,11 @@ class AccountEditController extends Controller
         return view('account.edit', compact('user'));
     }
 
-    public function update(Request $request)
+    public function update(UpdateAccountRequest $request)
     {
         $user = auth()->user();
 
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'name_kanji' => ['required', 'string', 'max:255'],
-            'name_kana' => ['required', 'string', 'max:255'],
-            'email' => [
-                'required',
-                'email',
-                'max:255',
-                Rule::unique('users', 'email')->ignore($user->id),
-            ],
-        ]);
+        $validated = $request->validated();
 
         $user->updateAccount($validated);
 
