@@ -10,12 +10,14 @@
         <div class="purchase-info">
             <p>商品名：{{ $product->product_name }}</p>
             <p>説明：{{ $product->description }}</p>
-            <div class="purchase-image">
-                <img
+            @if ($product->img_path)
+                <div class="purchase-image">
+                    <img
                     src="{{ asset('storage/' . $product->img_path) }}"
                     alt="{{ $product->product_name }}"
-                >
-            </div>
+                    >
+                </div>
+            @endif
 
             @if ($product->stock > 0)
 
@@ -23,6 +25,7 @@
                     action="{{ route('products.purchase', $product->id) }}"
                     method="POST"
                     class="purchase-form"
+                    id="purchase-form"
                 >
                     @csrf
 
@@ -53,6 +56,22 @@
                         戻る
                     </a>
                 </form>
+
+                <dialog id="purchase-confirm-dialog" class="purchase-confirm-dialog">
+                    <h2>購入確認</h2>
+
+                    <p>この商品を購入してもよろしいですか？</p>
+
+                    <div class="confirm-buttons">
+                        <button type="button" id="cancel-purchase">
+                            キャンセル
+                        </button>
+
+                        <button type="button" id="confirm-purchase">
+                            購入を確定する
+                        </button>
+                    </div>
+                </dialog>
             @else
 
                 <p>在庫切れのため購入できません。</p>

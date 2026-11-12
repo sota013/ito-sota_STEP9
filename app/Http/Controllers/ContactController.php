@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\ContactRequest;
+use App\Mail\ContactMail;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
-    public function send(Request $request)
+    public function send(ContactRequest $request)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255'],
-            'message' => ['required', 'string', 'max:2000'],
-        ]);
+        $validated = $request->validated();
+
+        Mail::to(config('mail.from.address'))
+            ->send(new ContactMail($validated));
 
         return redirect()
             ->route('products.index')

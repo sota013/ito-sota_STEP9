@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreProductRequest;
 use App\Models\Product;
 
 class ProductCreateController extends Controller
@@ -12,15 +12,9 @@ class ProductCreateController extends Controller
         return view('products.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $validated = $request->validate([
-            'product_name' => ['required', 'string', 'max:255'],
-            'price' => ['required', 'integer', 'min:0'],
-            'stock' => ['required', 'integer', 'min:0'],
-            'description' => ['required', 'string'],
-            'img_path' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
-        ]);
+        $validated = $request->validated();
 
         $imagePath = null;
 

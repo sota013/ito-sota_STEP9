@@ -8,17 +8,11 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('name_kana')->nullable()->change();
-            $table->foreignId('company_id')->nullable()->change();
-        });
+        //
     }
-
+    
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('name_kana')->nullable(false)->change();
-            $table->foreignId('company_id')->nullable(false)->change();
-        });
+        //
     }
 };

@@ -51,7 +51,7 @@
         <div class="form-group">
             <label for="img_path">商品画像</label>
             <input type="file" id="img_path" name="img_path"
-                accept="image/jpeg,image/png,image/webp">
+                accept="image/jpeg,image/png,image/webp" required>
             @error('img_path')
                 <p class="error-message">{{ $message }}</p>
             @enderror
